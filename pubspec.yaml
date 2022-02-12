@@ -32,6 +32,7 @@ dependencies:
   cloud_firestore: ^0.13.5
   firebase_auth: ^0.16.1
   flutter_svg: ^0.12.4+2
+  intl: ^0.17.0
 
 
 dev_dependencies:

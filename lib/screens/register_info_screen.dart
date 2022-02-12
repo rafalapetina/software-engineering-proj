@@ -25,11 +25,9 @@ class RegisterInfo extends StatelessWidget {
 
     _trySubmit() async{
       var isValid = _formKey.currentState.validate();
-      print(form);
       // FocusScope.of(context).unfocus();
       if (isValid) {
         _formKey.currentState.save();
-        print(form);
         var user = await FirebaseAuth.instance.currentUser();
         Firestore.instance.collection('usuarios').document(user.uid).setData(form);
         Navigator.of(context).pushReplacementNamed(ServicesScreen.routeName);

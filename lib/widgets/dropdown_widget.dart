@@ -41,7 +41,6 @@ class Custom_DropdownState extends State<CustomDropdown> {
           return null;
         },
         onChanged: (newValue) {
-          print(newValue);
           setState(() {
             _selectedValue = newValue;
           });

@@ -23,7 +23,6 @@ class _AuthScreenState extends State<AuthScreen> {
       } else {
         authResult = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
-        print(authResult);
         Navigator.of(ctx).pushReplacementNamed(PreRegister.routeName);
       }
     } on PlatformException catch (err) {

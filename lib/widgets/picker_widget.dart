@@ -51,6 +51,24 @@ class CustomPickerState extends State<CustomPicker> {
           Text('Rua Álvaro Portella, Dom Pedro I - 604')
         ];
         break;
+      case 'exame':
+        listTextValues = [
+          Text('Radiografia'),
+          Text('Exame de Sangue'),
+          Text('Exame e Urina e/ou Fezes'),
+          Text('Ultrassonografia'),
+          Text('Ressonância Magnética')
+        ];
+        break;
+      case 'medico':
+        listTextValues = [
+          Text('João Alberto Silva'),
+          Text('Carlos Chagas'),
+          Text('Aline Campos'),
+          Text('Pedro Silva'),
+          Text('Julia Nascimento')
+        ];
+        break;
       default:
     }
   }

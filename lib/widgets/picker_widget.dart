@@ -19,17 +19,36 @@ class CustomPickerState extends State<CustomPicker> {
   void _fillList() async {
     switch (widget.type) {
       case 'Especialidade':
-        var medicos = await Firestore.instance.collection('medicos').getDocuments();
+        var medicos =
+            await Firestore.instance.collection('medicos').getDocuments();
         print(medicos.documents);
         listTextValues = [
-          Text('Online'),
-          Text('Presencial'),
+          Text('Cardiologia'),
+          Text('Endocrinologia'),
+          Text('Endoscopia'),
+          Text('Ginecologia'),
+          Text('Obstetrícia'),
+          Text('Infectologia'),
+          Text('Neurocirurgia'),
+          Text('Urologia'),
+          Text('Psiquiatria')
         ];
         break;
       case 'Atendimento':
         listTextValues = [
           Text('Online'),
           Text('Presencial'),
+        ];
+        break;
+      case 'Local':
+        listTextValues = [
+          Text('Rua Viseu, Chácaras Reunidas- 204'),
+          Text('Rua João Mendes, Monte Castelo - 23'),
+          Text('Rua Machado Sidney, Centro - 34'),
+          Text('Rua Oeiras, Jd. Esplanada do Sol - 654'),
+          Text('Rua Astorga, Chácaras Reunidas - 54'),
+          Text('Rua Anna Benedicta, Interlagos - 765'),
+          Text('Rua Álvaro Portella, Dom Pedro I - 604')
         ];
         break;
       default:

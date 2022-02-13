@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:health_app/screens/appointment_screen.dart';
 import 'package:health_app/widgets/app_drawer_widget.dart';
 import 'package:health_app/widgets/service_item.dart';
+import 'package:health_app/screens/history_screen.dart';
 
 class ServicesScreen extends StatelessWidget {
   static const routeName = '/services';
@@ -39,7 +40,7 @@ class ServicesScreen extends StatelessWidget {
           ServiceItem(
             'Histórico de Consultas',
             'https://1.bp.blogspot.com/-PA560uAt_Ks/XU8kNQQgpbI/AAAAAAAEEiE/jEltCrjqh-4T6yN9q9KkxorBIZBgNGcggCLcBGAs/s1600/projeto.png',
-            routeName,
+            HistoryScreen.routeName,
           ),
         ],
       ),

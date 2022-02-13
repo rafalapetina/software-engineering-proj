@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:health_app/helpers/custom_route.dart';
 import 'package:health_app/screens/appointment_screen.dart';
 import 'package:health_app/screens/auth_screen.dart';
+import 'package:health_app/screens/exams_screen.dart';
 import 'package:health_app/screens/history_screen.dart';
 import 'package:health_app/screens/pre_register_screen.dart';
 import 'package:health_app/screens/register_info_screen.dart';
 import 'package:health_app/screens/services_screen.dart';
+import 'package:health_app/screens/medicines_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -62,6 +64,8 @@ class MyApp extends StatelessWidget {
         ServicesScreen.routeName: (ctx) => ServicesScreen(),
         AppointmentScreen.routeName: (ctx) => AppointmentScreen(),
         HistoryScreen.routeName: (ctx) => HistoryScreen(),
+        ExamsScreen.routeName: (ctx) => ExamsScreen(),
+        MedicinesScreen.routeName: (ctx) => MedicinesScreen(),
       },
     );
   }

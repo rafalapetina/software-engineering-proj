@@ -3,6 +3,7 @@ import 'package:health_app/screens/appointment_screen.dart';
 import 'package:health_app/widgets/app_drawer_widget.dart';
 import 'package:health_app/widgets/service_item.dart';
 import 'package:health_app/screens/history_screen.dart';
+import 'package:health_app/screens/exams_screen.dart';
 
 class ServicesScreen extends StatelessWidget {
   static const routeName = '/services';
@@ -28,9 +29,9 @@ class ServicesScreen extends StatelessWidget {
             AppointmentScreen.routeName,
           ),
           ServiceItem(
-            'Receitas Médicas',
+            'Agendar Exames',
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR0zWtL6Zch_SCVqtkA4Wi19JYojRcRtStAA&usqp=CAU',
-            routeName,
+            ExamsScreen.routeName,
           ),
           ServiceItem(
             'Consultas Agendadas',

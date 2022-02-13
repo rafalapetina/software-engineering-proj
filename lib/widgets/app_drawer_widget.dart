@@ -25,6 +25,19 @@ class AppDrawer extends StatelessWidget {
               Navigator.of(context).pushNamed('/registerInfo');
             },
           ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.medication_outlined),
+            title: Text(
+              'Medicines',
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pushNamed('/medicines');
+            },
+          ),
           Divider(
             thickness: 2,
             indent: 30,

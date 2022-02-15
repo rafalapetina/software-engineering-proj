@@ -17,9 +17,11 @@ class AppointmentScreen extends StatefulWidget {
 class _AppointmentScreenState extends State<AppointmentScreen> {
   _trySubmit() async {
     var _form = Provider.of<AppointmentForm>(context, listen: false).items;
+    var user = await FirebaseAuth.instance.currentUser();
+    _form['usuarioId'] = user.uid;
     for (var key in _form.keys) {
       var value = _form[key];
-      if (value == '' && key != 'Local') {
+      if (value == '' && key != 'Local' && key != 'anamnese') {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Theme.of(context).errorColor,
@@ -30,7 +32,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
         return;
       }
     }
-    _form['usuarioId'] = FirebaseAuth.instance.currentUser().toString();
     Firestore.instance.collection('consultas').document().setData(_form);
     Navigator.of(context).pushReplacementNamed(ServicesScreen.routeName);
   }

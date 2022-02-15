@@ -23,7 +23,7 @@ class _AuthScreenState extends State<AuthScreen> {
       } else {
         authResult = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
-        Navigator.of(ctx).pushReplacementNamed(PreRegister.routeName);
+        // Navigator.of(ctx).pushReplacementNamed(PreRegister.routeName);
       }
     } on PlatformException catch (err) {
       var message = 'Ocorreu um erro, cheque as suas credenciais';

@@ -54,6 +54,30 @@ class CustomPickerState extends State<CustomPicker> {
           Text('Presencial'),
         ];
         break;
+      case 'exame':
+        listTextValues = [
+          Text('Hemograma'),
+          Text('Colesterol'),
+          Text('Exame de Sangue'),
+          Text('Ureia e Creatinina'),
+          Text('Papanicolau'),
+          Text('Glicemia'),
+          Text('Exames de urina'),
+        ];
+        break;
+      case 'solicitante':
+         listTextValues = [
+          Text('Ricardo - CRM 12345678'),
+          Text('Pedro - CRM 87654321'),
+        ];
+        break;
+      case 'hospital':
+         listTextValues = [
+          Text('Hospital Albert Einstein'),
+          Text('Hospital São Luís'),
+          Text('Alta Laboratóios'),
+        ];
+        break;
       case 'Local':
         listTextValues = [
           Text(''),

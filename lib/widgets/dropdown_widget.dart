@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
 class CustomDropdown extends StatefulWidget {
-  final form;
+  final form, snapshot, isFirstAcess;
 
-  CustomDropdown(Map<String, dynamic> this.form);
+  CustomDropdown(Map<String, dynamic> this.form, this.snapshot, this.isFirstAcess);
 
   @override
   Custom_DropdownState createState() => Custom_DropdownState();
 }
 
 class Custom_DropdownState extends State<CustomDropdown> {
-  var _selectedValue;
 
   List<DropdownMenuItem<String>> get dropdownItems {
     return [
@@ -21,6 +20,10 @@ class Custom_DropdownState extends State<CustomDropdown> {
 
   @override
   Widget build(BuildContext context) {
+    var _selectedValue;
+    if (!widget.isFirstAcess)
+      _selectedValue = widget.snapshot.data['sexo'];
+
     return DropdownButtonFormField(
         items: dropdownItems,
         key: ValueKey('sex'),

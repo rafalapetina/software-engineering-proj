@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:health_app/screens/attendance_data.dart';
-import 'package:health_app/screens/exam_data.dart';
+import 'package:health_app/helpers/dismiss_keyboard.dart';
+import 'package:health_app/providers/user_provider.dart';
 
 class HistoryScreen extends StatefulWidget {
   static const routeName = '/history';
@@ -12,45 +13,63 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   var attendance = AttendanceData.getData;
   var exam = ExamData.getData;
-
-  static const showCard = true;
+  var anamnese = '';
+  var isDoctor = false;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
+    return DismissKeyboard(
+      child: DefaultTabController(
         length: 2,
         child: Scaffold(
           appBar: AppBar(
             bottom: const TabBar(
               tabs: [
-                Tab(text: "Atendimento", icon: Icon(Icons.calendar_today)),
-                Tab(text: "Exame", icon: Icon(Icons.health_and_safety)),
+                Tab(
+                  text: "Atendimento",
+                  icon: Icon(Icons.calendar_today),
+                ),
+                Tab(
+                  text: "Exame",
+                  icon: Icon(Icons.bar_chart_sharp),
+                ),
               ],
             ),
             title: const Text('Histórico'),
-            backgroundColor: Colors.red,
           ),
-          body: TabBarView(
-            children: [
-              ListView.builder(
-                  itemCount: attendance.length,
-                  itemBuilder: (context, index) {
-                    return _buildCard(attendance[index]);
-                  }),
-              ListView.builder(
-                  itemCount: exam.length,
-                  itemBuilder: (context, index) {
-                    return _buildExamCard(exam[index]);
-                  }),
-            ],
+          body: FutureBuilder(
+            future: Firestore.instance.collection('consultas').getDocuments(),
+            builder: (ctx, snapshot) =>
+                snapshot.connectionState == ConnectionState.waiting
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : User.isDoc
+                        ? _buildCard(attendance, attendance[0])
+                        : TabBarView(
+                            children: [
+                              ListView.builder(
+                                itemCount: snapshot.data.documents.length,
+                                itemBuilder: (context, index) {
+                                  return _buildCard(attendance,
+                                      snapshot.data.documents[index].data);
+                                },
+                              ),
+                              ListView.builder(
+                                itemCount: exam.length,
+                                itemBuilder: (context, index) {
+                                  return _buildExamCard(exam[index]);
+                                },
+                              ),
+                            ],
+                          ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildCard(data) {
+  Widget _buildCard(data, snapshot) {
     return Card(
       elevation: 20,
       color: Colors.blueGrey[50],
@@ -58,23 +77,33 @@ class _HistoryScreenState extends State<HistoryScreen> {
         children: [
           ListTile(
             title: Text(
-              'Dia ${data['date']}',
+              'Dia ${snapshot['Horario']}',
               style: const TextStyle(fontWeight: FontWeight.w500),
             ),
-            subtitle: Text('Dr. ${data['doctor']} - CRM ${data['crm']}',
-                style: const TextStyle(color: Colors.blueGrey)),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  !User.isDoc ?
+                  'Dr. ${snapshot['Medico']} - ${snapshot['Especialidade']}':
+                  '${snapshot['Medico']} - ${snapshot['Especialidade']}',
+                  style: const TextStyle(color: Colors.blueGrey),
+                ),
+                Text('CRM 87654321'),
+              ],
+            ),
             leading: Icon(
-              Icons.calendar_view_month_outlined,
+              Icons.calendar_today,
               color: Colors.blue[500],
             ),
           ),
           const Divider(),
           ListTile(
             title: Text(
-              '${data['type']}',
+              '${snapshot['Atendimento']}',
               style: const TextStyle(fontWeight: FontWeight.w500),
             ),
-            subtitle: Text('${data['address']}'),
+            subtitle: Text(snapshot['Local']),
             leading: Icon(
               Icons.gps_fixed,
               color: Colors.blue[500],
@@ -82,9 +111,27 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
           ListTile(
             title: const Text('Anamnese:'),
-            subtitle: Text('${data['anamnese']}'),
+            subtitle: Column(
+              children: [
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  initialValue: anamnese,
+                  onChanged: (value) {
+                    anamnese = value;
+                  },
+                ),
+                if (User.isDoc)
+                  ElevatedButton(
+                    onPressed: () {
+                      data['anamnese'] = anamnese;
+                    },
+                    child: Text('Confirmar'),
+                  ),
+              ],
+            ),
             leading: Icon(
-              Icons.document_scanner_outlined,
+              Icons.dock_outlined,
               color: Colors.blue[500],
             ),
           ),
@@ -104,10 +151,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
               'Dia ${data['date']}',
               style: const TextStyle(fontWeight: FontWeight.w500),
             ),
-            subtitle: Text('Dr. ${data['doctor']} - CRM ${data['crm']}',
+            subtitle: Text(
+                !User.isDoc
+                    ? 'Dr. ${data['doctor']} - CRM ${data['crm']}'
+                    : '${data['doctor']} - ${data['crm']}',
                 style: const TextStyle(color: Colors.blueGrey)),
             leading: Icon(
-              Icons.calendar_view_month_outlined,
+              Icons.calendar_today,
               color: Colors.blue[500],
             ),
           ),
@@ -115,7 +165,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ListTile(
             title: Text('${data['exam']}'),
             leading: Icon(
-              Icons.health_and_safety_sharp,
+              Icons.bar_chart_sharp,
               color: Colors.blue[500],
             ),
           ),
@@ -133,4 +183,38 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ),
     );
   }
+}
+
+class ExamData {
+  static final getData = [
+    {
+      'date': '15/02/2022',
+      'exam': 'Exame de Sangue',
+      'doctor': 'Ricardo',
+      'crm': '12345678',
+      'address': 'Hospital Albert Eistein',
+    }
+  ];
+}
+
+class AttendanceData {
+  static final getData = [
+    {
+      'Horario': '15/02/2021 18:30',
+      'Medico': 'Paciente',
+      'Especialidade': 'Rafael',
+      'Atendimento': 'Presencial',
+      'Local': '423 Creek Ave. Oshkosh, WI 54901',
+      'anamnese': ''
+    },
+    // {
+    //   'date': '20/05/2021',
+    //   'doctor': 'Ana Paula',
+    //   'crm': '12345432-6',
+    //   'type': 'Online',
+    //   'address': '',
+    //   'anamnese':
+    //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    // },
+  ];
 }

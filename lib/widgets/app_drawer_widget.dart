@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:health_app/providers/user_provider.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -23,6 +24,20 @@ class AppDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.of(context).pushNamed('/registerInfo');
+            },
+          ),
+          Divider(),
+          if (!User.isDoc)
+          ListTile(
+            leading: Icon(Icons.medical_services_outlined),
+            title: Text(
+              'Medicamentos',
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pushNamed('/medicines');
             },
           ),
           Divider(
